@@ -91,29 +91,32 @@
 	document.addEventListener("click", subtractScore);
 	
 	function teleportSphere() {
-		var screenWidth = window.innerWidth;
-		var screenHeight = window.innerHeight;
-		var sphereWidth = sphere.offsetWidth;
-		var sphereHeight = sphere.offsetHeight;
-		var scoreWidth = scoreDisplay.offsetWidth;
-		var scoreHeight = scoreDisplay.offsetHeight;
-		var maxPosX = screenWidth - sphereWidth;
-		var maxPosY = screenHeight - sphereHeight;
-		var minPosX = scoreWidth;
-		var minPosY = scoreHeight;
-		var randPosX = Math.floor(Math.random() * (maxPosX - minPosX) + minPosX);
-		var randPosY = Math.floor(Math.random() * (maxPosY - minPosY) + minPosY);
-		var clickDuration = new Date().getTime() - clickTime;
-		
-				if (randPosX < 0 || randPosY < 0) {
-			return teleportSphere();
-		} else {
-			sphere.style.left = randPosX + "px";
-			sphere.style.top = randPosY + "px";
-			clickTime = new Date().getTime();
-			updateStats(clickDuration);
-		}
-	}
+    var screenWidth = window.innerWidth;
+    var screenHeight = window.innerHeight;
+    var sphereWidth = sphere.offsetWidth;
+    var sphereHeight = sphere.offsetHeight;
+    var scoreWidth = scoreDisplay.offsetWidth;
+    var scoreHeight = scoreDisplay.offsetHeight;
+    var maxPosX = screenWidth - sphereWidth;
+    var maxPosY = screenHeight - sphereHeight;
+    var minPosX = scoreWidth;
+    var minPosY = scoreHeight;
+    var randPosX = Math.floor(Math.random() * (maxPosX - minPosX) + minPosX);
+    var randPosY = Math.floor(Math.random() * (maxPosY - minPosY) + minPosY);
+    var clickDuration = new Date().getTime() - clickTime;
+    
+    if (randPosX < 0 || randPosY < 0) {
+        return teleportSphere();
+    } else {
+        randPosX += 50; // add 50 pixels to the x coordinate
+        randPosY += 50; // add 50 pixels to the y coordinate
+        sphere.style.left = randPosX + "px";
+        sphere.style.top = randPosY + "px";
+        clickTime = new Date().getTime();
+        updateStats(clickDuration);
+    }
+}
+
 	
 	function subtractScore(event) {
     if (event.target.id === "sphere") {
