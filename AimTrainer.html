@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Teleporting Sphere</title>
+	<style>
+	body {
+		background-color: #333333;
+		}
+		#sphere {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			border-radius: 50%;
+			background-color: red;
+			width: 100px;
+			height: 100px;
+			cursor: crosshair;
+		}
+
+	#score {
+		position: absolute;
+		top: 20px;
+		right: 20px;
+		font-size: 24px;
+		color: white;
+	}
+	
+	#avg-time {
+		position: absolute;
+		top: 50px;
+		right: 20px;
+		font-size: 24px;
+		color: white;
+	}
+	
+	#score-label {
+		position: absolute;
+		top: 20px;
+		right: 100px;
+		font-size: 24px;
+		color: white;
+	}
+	
+	#avg-time-label {
+		position: absolute;
+		top: 50px;
+		right: 100px;
+		font-size: 24px;
+		color: white;
+	}
+
+	#accuracy {
+		position: absolute;
+		top: 80px;
+		right: 20px;
+		font-size: 24px;
+		color: white;
+	}
+	
+	#accuracy-label {
+		position: absolute;
+		top: 80px;
+		right: 100px;
+		font-size: 24px;
+		color: white;
+	}
+</style>
+</head>
+<body>
+	<div id="sphere"></div>
+	<div id="score">0</div>
+	<div id="avg-time">0</div>
+	<div id="accuracy">0%</div>
+	<div id="score-label">Score:</div>
+	<div id="avg-time-label">Avg Time:</div>
+	<div id="accuracy-label">Accuracy:</div>
+
+<script>
+	var sphere = document.getElementById("sphere");
+	var scoreDisplay = document.getElementById("score");
+	var avgTimeDisplay = document.getElementById("avg-time");
+	var accuracyDisplay = document.getElementById("accuracy");
+	var clickTime = new Date().getTime();
+	var score = 0;
+	var totalTime = 0;
+	var numClicks = 0;
+	var numSuccessClicks = 0;
+	
+	sphere.addEventListener("click", teleportSphere);
+	document.addEventListener("click", subtractScore);
+	
+	function teleportSphere() {
+		var screenWidth = window.innerWidth;
+		var screenHeight = window.innerHeight;
+		var sphereWidth = sphere.offsetWidth;
+		var sphereHeight = sphere.offsetHeight;
+		var scoreWidth = scoreDisplay.offsetWidth;
+		var scoreHeight = scoreDisplay.offsetHeight;
+		var maxPosX = screenWidth - sphereWidth;
+		var maxPosY = screenHeight - sphereHeight;
+		var minPosX = scoreWidth;
+		var minPosY = scoreHeight;
+		var randPosX = Math.floor(Math.random() * (maxPosX - minPosX) + minPosX);
+		var randPosY = Math.floor(Math.random() * (maxPosY - minPosY) + minPosY);
+		var clickDuration = new Date().getTime() - clickTime;
+		
+				if (randPosX < 0 || randPosY < 0) {
+			return teleportSphere();
+		} else {
+			sphere.style.left = randPosX + "px";
+			sphere.style.top = randPosY + "px";
+			clickTime = new Date().getTime();
+			updateStats(clickDuration);
+		}
+	}
+	
+	function subtractScore(event) {
+    if (event.target.id === "sphere") {
+        score++;
+        numSuccessClicks++;
+        scoreDisplay.textContent = score;
+    } else {
+        numClicks++; // increment numClicks even if it's not a successful click
+        scoreDisplay.textContent = --score;
+        accuracy = numSuccessClicks / numClicks * 100;
+        accuracyDisplay.textContent = accuracy.toFixed(0) + "%";
+    }
+}
+
+
+
+	
+	function updateStats(clickDuration) {
+		totalTime += clickDuration;
+		numClicks++;
+		accuracy = numSuccessClicks / numClicks * 100;
+		avgTime = totalTime / numClicks;
+		accuracyDisplay.textContent = accuracy.toFixed(0) + "%";
+		avgTimeDisplay.textContent = avgTime.toFixed(0) + "ms";
+	}
+</script>
+</body>
+</html>
