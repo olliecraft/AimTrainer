@@ -98,11 +98,14 @@
 		var scoreWidth = scoreDisplay.offsetWidth;
 		var scoreHeight = scoreDisplay.offsetHeight;
 		var maxPosX = screenWidth - sphereWidth;
-		var maxPosY = screenHeight - sphereHeight;
-		var minPosX = scoreWidth;
-		var minPosY = scoreHeight;
-		var randPosX = Math.floor(Math.random() * (maxPosX - minPosX) + minPosX);
-		var randPosY = Math.floor(Math.random() * (maxPosY - minPosY) + minPosY);
+var maxPosY = screenHeight - sphereHeight;
+var minPosX = scoreWidth;
+var minPosY = scoreHeight;
+var maxOffsetX = (maxPosX - minPosX) / 4; // reduce the maximum offset by half
+var maxOffsetY = (maxPosY - minPosY) / 4; // reduce the maximum offset by half
+var randPosX = Math.floor(Math.random() * (maxOffsetX * 2) + minPosX + maxOffsetX);
+var randPosY = Math.floor(Math.random() * (maxOffsetY * 2) + minPosY + maxOffsetY);
+
 		var clickDuration = new Date().getTime() - clickTime;
 		
 				if (randPosX < 0 || randPosY < 0) {
